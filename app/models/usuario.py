@@ -1,18 +1,12 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Boolean, DateTime
-from sqlalchemy.dialects.postgresql import UUID
 from app.config.db_config import Base
-
-
-def uuid_generator():
-    """Gera UUID como string para compatibilidade"""
-    return str(uuid.uuid4())
 
 
 class Usuario(Base):
     """
-    Model de usuário do sistema
+    Model de usuário do sistema - CORRIGIDO para UUID como String
     
     Tabela: tbusuarios
     
@@ -23,10 +17,11 @@ class Usuario(Base):
     """
     __tablename__ = "tbusuarios"
 
+    # ✅ CORREÇÃO: UUID como String para compatibilidade com PostgreSQL
     id_usuario = Column(
-        UUID(as_uuid=True), 
+        String(36),  # ← Mudança aqui: String ao invés de UUID
         primary_key=True, 
-        default=uuid.uuid4,
+        default=lambda: str(uuid.uuid4()),  # ← Retorna string
         comment="ID único do usuário"
     )
     
